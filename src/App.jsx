@@ -520,7 +520,7 @@ export default function BioMatch() {
         sassyComment={sassyComment}
         setSassyComment={setSassyComment}
       />
-git    );
+    );
   }
 
   // Home / Name entry
