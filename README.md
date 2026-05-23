@@ -6,7 +6,7 @@ The platform combines healthcare awareness, genetics education, and gamified int
 
 
 
-Rather than presenting medical information in a cold or clinical way, MedMatch transforms preventive healthcare into an interactive experience through compatibility scores, quizzes, educational insights, and family health awareness tools.
+Rather than presenting medical information in a cold or clinical way, BioMatch transforms preventive healthcare into an interactive experience through compatibility scores, quizzes, educational insights, and family health awareness tools.
 
 The Problem
 
