@@ -88,10 +88,6 @@ Tech Stack
 
 Frontend: React + Vite
 
-Backend: Node.js / Express
-
-Authentication: Firebase/Auth0
-
 AI Integration: Google Ai API /Claude API
 
 Styling: Tailwind CSS
