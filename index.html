@@ -1,0 +1,1309 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, ChevronDown, Send, MapPin, Phone, Mail, Linkedin, Twitter, Facebook, ArrowRight, Star, Users, Briefcase, Code, Award } from 'lucide-react';
+
+// Main App Component with Routing
+const McTechyWebsite = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const renderPage = () => {
+    switch(currentPage) {
+      case 'home': return <HomePage setCurrentPage={setCurrentPage} />;
+      case 'about': return <AboutPage />;
+      case 'services': return <ServicesPage />;
+      case 'portfolio': return <PortfolioPage />;
+      case 'team': return <TeamPage />;
+      case 'blog': return <BlogPage />;
+      case 'careers': return <CareersPage />;
+      case 'contact': return <ContactPage />;
+      case 'faq': return <FAQPage />;
+      case 'testimonials': return <TestimonialsPage />;
+      case 'privacy': return <PrivacyPage />;
+      case 'terms': return <TermsPage />;
+      default: return <HomePage setCurrentPage={setCurrentPage} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header/Navigation */}
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-gradient-to-b from-gray-900 to-transparent'}`}>
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => { setCurrentPage('home'); closeMobileMenu(); }}>
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">M</span>
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent hidden sm:inline">McTechy</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex space-x-8">
+              {[
+                { name: 'Home', page: 'home' },
+                { name: 'About', page: 'about' },
+                { name: 'Services', page: 'services' },
+                { name: 'Portfolio', page: 'portfolio' },
+                { name: 'Team', page: 'team' },
+                { name: 'Blog', page: 'blog' },
+                { name: 'Careers', page: 'careers' },
+              ].map((item) => (
+                <button
+                  key={item.page}
+                  onClick={() => { setCurrentPage(item.page); closeMobileMenu(); }}
+                  className={`font-medium transition-colors ${currentPage === item.page ? 'text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text' : 'text-gray-700 hover:text-purple-600'}`}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className="hidden lg:flex space-x-4">
+              <button
+                onClick={() => setCurrentPage('contact')}
+                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all"
+              >
+                Contact Us
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden text-gray-700"
+            >
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden bg-white border-t border-gray-200">
+              <div className="px-4 pt-4 pb-6 space-y-3">
+                {[
+                  { name: 'Home', page: 'home' },
+                  { name: 'About', page: 'about' },
+                  { name: 'Services', page: 'services' },
+                  { name: 'Portfolio', page: 'portfolio' },
+                  { name: 'Team', page: 'team' },
+                  { name: 'Blog', page: 'blog' },
+                  { name: 'Careers', page: 'careers' },
+                  { name: 'Contact', page: 'contact' },
+                  { name: 'FAQs', page: 'faq' },
+                  { name: 'Testimonials', page: 'testimonials' },
+                ].map((item) => (
+                  <button
+                    key={item.page}
+                    onClick={() => { setCurrentPage(item.page); closeMobileMenu(); }}
+                    className="block w-full text-left px-4 py-2 hover:bg-purple-50 rounded-lg font-medium"
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </nav>
+      </header>
+
+      {/* Main Content */}
+      <main>
+        {renderPage()}
+      </main>
+
+      {/* Footer */}
+      <Footer setCurrentPage={setCurrentPage} />
+    </div>
+  );
+};
+
+// ==================== PAGE COMPONENTS ====================
+
+// HOME PAGE
+const HomePage = ({ setCurrentPage }) => {
+  return (
+    <div>
+      {/* Hero Section */}
+      <section className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="text-white space-y-6">
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                Transform Your Digital <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">Future</span>
+              </h1>
+              <p className="text-xl text-gray-300">
+                McTechy delivers cutting-edge technology solutions that empower your business to achieve extraordinary results in the digital world.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  onClick={() => setCurrentPage('contact')}
+                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-2"
+                >
+                  Get Started <ArrowRight size={20} />
+                </button>
+                <button
+                  onClick={() => setCurrentPage('about')}
+                  className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-2xl opacity-30"></div>
+                <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-8 text-white text-center h-96 flex items-center justify-center">
+                  <div className="space-y-4">
+                    <Code size={64} className="mx-auto" />
+                    <p className="text-2xl font-bold">Innovation in Code</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { number: '500+', label: 'Projects Delivered' },
+              { number: '200+', label: 'Happy Clients' },
+              { number: '50+', label: 'Team Members' },
+              { number: '10+', label: 'Years Experience' },
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center">
+                <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{stat.number}</p>
+                <p className="text-gray-600 mt-2">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Preview */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center mb-4">Our Services</h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Comprehensive technology solutions tailored to your business needs</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: '🚀', title: 'Web Development', desc: 'Modern, responsive websites built with latest technologies' },
+              { icon: '📱', title: 'Mobile Apps', desc: 'Native and cross-platform mobile applications' },
+              { icon: '☁️', title: 'Cloud Solutions', desc: 'Scalable cloud infrastructure and deployment' },
+            ].map((service, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
+                <p className="text-5xl mb-4">{service.icon}</p>
+                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                <p className="text-gray-600">{service.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setCurrentPage('services')}
+              className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+            >
+              View All Services
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600">
+        <div className="max-w-4xl mx-auto text-center text-white px-4">
+          <h2 className="text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
+          <p className="text-xl mb-8 opacity-90">Let's work together to bring your vision to life</p>
+          <button
+            onClick={() => setCurrentPage('contact')}
+            className="px-8 py-4 bg-white text-purple-600 rounded-lg font-semibold hover:shadow-xl transition-all"
+          >
+            Contact Us Today
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// ABOUT PAGE
+const AboutPage = () => {
+  return (
+    <div className="pt-20">
+      {/* About Hero */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">About McTechy</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            McTechy is a forward-thinking technology company dedicated to delivering innovative digital solutions that drive business growth and transformation.
+          </p>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold">Our Mission</h3>
+              <p className="text-gray-600">
+                To empower businesses with cutting-edge technology solutions that drive innovation, efficiency, and sustainable growth in the digital era.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold">Our Vision</h3>
+              <p className="text-gray-600">
+                To be the leading technology partner of choice, recognized globally for delivering exceptional digital transformation solutions.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold">Our Values</h3>
+              <p className="text-gray-600">
+                Innovation, Integrity, Excellence, Collaboration, and Client Success drive every decision we make.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12">Why Choose McTechy?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { title: 'Expert Team', desc: 'Highly skilled professionals with years of industry experience' },
+              { title: 'Proven Track Record', desc: '500+ successful projects across diverse industries' },
+              { title: 'Latest Technologies', desc: 'Always at the forefront of technological innovation' },
+              { title: 'Client-Centric Approach', desc: 'Your success is our primary objective' },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl shadow-lg">
+                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12 text-center">Our Journey</h2>
+          <div className="space-y-8">
+            {[
+              { year: '2014', event: 'McTechy Founded with a vision to transform digital solutions' },
+              { year: '2016', event: 'Expanded services to include mobile app development' },
+              { year: '2018', event: 'Reached 100+ successful project milestone' },
+              { year: '2021', event: 'Launched cloud solutions and enterprise services' },
+              { year: '2024', event: 'Celebrating 500+ projects and growing globally' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex gap-8">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold"></div>
+                  {idx < 4 && <div className="w-1 h-20 bg-gray-200 mt-4"></div>}
+                </div>
+                <div className="pt-2">
+                  <p className="font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{item.year}</p>
+                  <p className="text-gray-600 mt-1">{item.event}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// SERVICES PAGE
+const ServicesPage = () => {
+  const services = [
+    {
+      icon: '💻',
+      title: 'Web Development',
+      desc: 'Custom web applications built with modern frameworks and best practices',
+      features: ['Responsive Design', 'SEO Optimization', 'Performance Tuning', 'Security Focus']
+    },
+    {
+      icon: '📱',
+      title: 'Mobile App Development',
+      desc: 'Native and cross-platform mobile solutions for iOS and Android',
+      features: ['Native Apps', 'Cross-Platform', 'UI/UX Design', 'App Store Deployment']
+    },
+    {
+      icon: '☁️',
+      title: 'Cloud Solutions',
+      desc: 'Scalable cloud infrastructure and managed services',
+      features: ['AWS & Azure', 'Deployment', 'Monitoring', 'Cost Optimization']
+    },
+    {
+      icon: '🔒',
+      title: 'Cybersecurity',
+      desc: 'Comprehensive security solutions to protect your digital assets',
+      features: ['Threat Detection', 'Compliance', 'Penetration Testing', 'Security Audit']
+    },
+    {
+      icon: '📊',
+      title: 'Data Analytics',
+      desc: 'Transform raw data into actionable business insights',
+      features: ['Data Pipeline', 'Visualization', 'ML Integration', 'Real-time Analytics']
+    },
+    {
+      icon: '🤖',
+      title: 'AI & Machine Learning',
+      desc: 'Advanced AI solutions for automation and intelligent systems',
+      features: ['ML Models', 'NLP Solutions', 'Computer Vision', 'Predictive Analytics']
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Our Services</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Comprehensive technology services designed to solve your business challenges
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, idx) => (
+              <div key={idx} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all p-8 border-t-4 border-transparent hover:border-purple-600">
+                <p className="text-5xl mb-4">{service.icon}</p>
+                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                <p className="text-gray-600 mb-6">{service.desc}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-700">
+                      <div className="w-2 h-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"></div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Process */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12 text-center">Our Process</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { step: '01', title: 'Discovery', desc: 'Understand your needs and goals' },
+              { step: '02', title: 'Planning', desc: 'Create comprehensive strategy' },
+              { step: '03', title: 'Development', desc: 'Build with excellence' },
+              { step: '04', title: 'Deployment', desc: 'Launch and support' },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl text-center">
+                <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">{item.step}</p>
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// PORTFOLIO PAGE
+const PortfolioPage = () => {
+  const projects = [
+    {
+      title: 'E-Commerce Platform',
+      category: 'Web Development',
+      desc: 'Scalable e-commerce solution with payment integration',
+      tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      image: '🛒'
+    },
+    {
+      title: 'Fitness Mobile App',
+      category: 'Mobile App',
+      desc: 'Cross-platform fitness tracking and coaching app',
+      tags: ['React Native', 'Firebase', 'Redux'],
+      image: '💪'
+    },
+    {
+      title: 'Healthcare Analytics Dashboard',
+      category: 'Data Analytics',
+      desc: 'Real-time health metrics and patient insights',
+      tags: ['Python', 'Tableau', 'AWS', 'PostgreSQL'],
+      image: '📊'
+    },
+    {
+      title: 'AI Content Generator',
+      category: 'AI/ML',
+      desc: 'Intelligent content creation using machine learning',
+      tags: ['TensorFlow', 'NLP', 'Python', 'FastAPI'],
+      image: '🤖'
+    },
+    {
+      title: 'Cloud Migration Project',
+      category: 'Cloud Solutions',
+      desc: 'Enterprise migration to AWS with zero downtime',
+      tags: ['AWS', 'Docker', 'Kubernetes', 'Terraform'],
+      image: '☁️'
+    },
+    {
+      title: 'Cybersecurity Audit Suite',
+      category: 'Security',
+      desc: 'Comprehensive security assessment platform',
+      tags: ['Python', 'React', 'PostgreSQL', 'OpenSSL'],
+      image: '🔒'
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Our Portfolio</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Showcasing our best work across diverse industries and technologies
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, idx) => (
+              <div key={idx} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 h-48 flex items-center justify-center text-6xl">
+                  {project.image}
+                </div>
+                <div className="p-6">
+                  <p className="text-sm text-purple-600 font-semibold mb-2">{project.category}</p>
+                  <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                  <p className="text-gray-600 mb-4">{project.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, i) => (
+                      <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// TEAM PAGE
+const TeamPage = () => {
+  const team = [
+    { name: 'John Smith', role: 'CEO & Founder', dept: 'Leadership', avatar: '👨‍💼' },
+    { name: 'Sarah Johnson', role: 'CTO', dept: 'Technology', avatar: '👩‍💻' },
+    { name: 'Michael Chen', role: 'Lead Developer', dept: 'Development', avatar: '👨‍💻' },
+    { name: 'Emma Williams', role: 'Design Lead', dept: 'Design', avatar: '👩‍🎨' },
+    { name: 'David Brown', role: 'Project Manager', dept: 'Management', avatar: '👨‍💼' },
+    { name: 'Lisa Anderson', role: 'DevOps Engineer', dept: 'Infrastructure', avatar: '👩‍💻' },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Our Team</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Meet the talented professionals driving innovation at McTechy
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {team.map((member, idx) => (
+              <div key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 h-40 flex items-center justify-center text-7xl">
+                  {member.avatar}
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold">{member.name}</h3>
+                  <p className="text-purple-600 font-semibold mb-1">{member.role}</p>
+                  <p className="text-gray-600 text-sm mb-4">{member.dept}</p>
+                  <div className="flex gap-3">
+                    <Linkedin size={18} className="text-gray-400 hover:text-blue-500 cursor-pointer" />
+                    <Twitter size={18} className="text-gray-400 hover:text-blue-400 cursor-pointer" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12 text-center">Team Culture</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: '🎯', title: 'Excellence', desc: 'We strive for excellence in everything we do' },
+              { icon: '🤝', title: 'Collaboration', desc: 'Together we achieve extraordinary results' },
+              { icon: '💡', title: 'Innovation', desc: 'Constantly pushing boundaries and exploring new ideas' },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl text-center">
+                <p className="text-5xl mb-4">{item.icon}</p>
+                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// BLOG PAGE
+const BlogPage = () => {
+  const blogs = [
+    {
+      title: 'The Future of AI in Business',
+      author: 'Sarah Johnson',
+      date: 'March 15, 2024',
+      category: 'AI & Technology',
+      excerpt: 'Exploring how artificial intelligence is transforming business operations and creating new opportunities...',
+      image: '🤖'
+    },
+    {
+      title: 'Web Development Trends 2024',
+      author: 'Michael Chen',
+      date: 'March 10, 2024',
+      category: 'Web Development',
+      excerpt: 'Latest frameworks, tools, and best practices in modern web development...',
+      image: '💻'
+    },
+    {
+      title: 'Cloud Security Best Practices',
+      author: 'Lisa Anderson',
+      date: 'March 5, 2024',
+      category: 'Security',
+      excerpt: 'Essential security measures for protecting your cloud infrastructure...',
+      image: '🔒'
+    },
+    {
+      title: 'Mobile App Performance Optimization',
+      author: 'David Brown',
+      date: 'February 28, 2024',
+      category: 'Mobile Development',
+      excerpt: 'Techniques to improve app performance and user experience...',
+      image: '📱'
+    },
+    {
+      title: 'Data-Driven Decision Making',
+      author: 'Emma Williams',
+      date: 'February 20, 2024',
+      category: 'Analytics',
+      excerpt: 'How to leverage data insights for better business decisions...',
+      image: '📊'
+    },
+    {
+      title: 'DevOps Automation Guide',
+      author: 'John Smith',
+      date: 'February 15, 2024',
+      category: 'DevOps',
+      excerpt: 'Streamline your deployment process with modern DevOps practices...',
+      image: '⚙️'
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Blog & News</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Latest insights, trends, and updates from the McTechy team
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog, idx) => (
+              <article key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer group">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 h-48 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-300">
+                  {blog.image}
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                      {blog.category}
+                    </span>
+                    <span className="text-gray-500 text-sm">{blog.date}</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 transition-colors">
+                    {blog.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">{blog.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">By {blog.author}</span>
+                    <span className="text-purple-600 font-semibold flex items-center gap-1">
+                      Read More <ArrowRight size={16} />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// CAREERS PAGE
+const CareersPage = () => {
+  const openings = [
+    {
+      title: 'Senior Full Stack Developer',
+      dept: 'Engineering',
+      location: 'Remote',
+      type: 'Full-time',
+      level: 'Senior'
+    },
+    {
+      title: 'UX/UI Designer',
+      dept: 'Design',
+      location: 'New York',
+      type: 'Full-time',
+      level: 'Mid-level'
+    },
+    {
+      title: 'Cloud Infrastructure Engineer',
+      dept: 'DevOps',
+      location: 'San Francisco',
+      type: 'Full-time',
+      level: 'Senior'
+    },
+    {
+      title: 'Data Science Engineer',
+      dept: 'Data',
+      location: 'Remote',
+      type: 'Full-time',
+      level: 'Mid-level'
+    },
+    {
+      title: 'Project Manager',
+      dept: 'Management',
+      location: 'London',
+      type: 'Full-time',
+      level: 'Mid-level'
+    },
+    {
+      title: 'QA Engineer',
+      dept: 'Quality Assurance',
+      location: 'Remote',
+      type: 'Full-time',
+      level: 'Junior'
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Join Our Team</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            We're always looking for talented individuals to join McTechy and help us shape the future of technology
+          </p>
+        </div>
+      </section>
+
+      {/* Why Work Here */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12">Why Work at McTechy?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { icon: '🌟', title: 'Career Growth', desc: 'Opportunities to develop your skills and advance your career' },
+              { icon: '🎯', title: 'Meaningful Work', desc: 'Work on projects that make a real impact' },
+              { icon: '💰', title: 'Competitive Pay', desc: 'Industry-competitive salaries and benefits' },
+              { icon: '🏠', title: 'Flexible Work', desc: 'Remote and flexible work arrangements' },
+              { icon: '🎓', title: 'Learning', desc: 'Continuous learning and professional development' },
+              { icon: '🤝', title: 'Team Culture', desc: 'Collaborative and inclusive team environment' },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-gray-50 p-8 rounded-xl">
+                <p className="text-4xl mb-4">{item.icon}</p>
+                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Job Openings */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12">Open Positions</h2>
+          <div className="space-y-4">
+            {openings.map((job, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border-l-4 border-purple-600">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{job.title}</h3>
+                    <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                      <span className="flex items-center gap-1">📍 {job.location}</span>
+                      <span className="flex items-center gap-1">💼 {job.dept}</span>
+                      <span className="flex items-center gap-1">⏰ {job.type}</span>
+                      <span className="flex items-center gap-1">⭐ {job.level}</span>
+                    </div>
+                  </div>
+                  <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// CONTACT PAGE
+const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    message: '',
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.name && formData.email && formData.message) {
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+      setTimeout(() => setSubmitted(false), 5000);
+    }
+  };
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Get in touch with our team. We'd love to hear about your project.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Contact Info */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <MapPin className="text-purple-600 flex-shrink-0 mt-1" size={24} />
+                    <div>
+                      <p className="font-semibold">Address</p>
+                      <p className="text-gray-600">123 Tech Avenue, San Francisco, CA 94105</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Phone className="text-purple-600 flex-shrink-0 mt-1" size={24} />
+                    <div>
+                      <p className="font-semibold">Phone</p>
+                      <p className="text-gray-600">+1 (555) 123-4567</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Mail className="text-purple-600 flex-shrink-0 mt-1" size={24} />
+                    <div>
+                      <p className="font-semibold">Email</p>
+                      <p className="text-gray-600">hello@mctechy.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-bold mb-4">Business Hours</h4>
+                <div className="text-gray-600 space-y-2">
+                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                  <p>Saturday: 10:00 AM - 4:00 PM</p>
+                  <p>Sunday: Closed</p>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-bold mb-4">Follow Us</h4>
+                <div className="flex gap-4">
+                  <Linkedin className="text-gray-400 hover:text-blue-600 cursor-pointer transition-colors" size={24} />
+                  <Twitter className="text-gray-400 hover:text-blue-400 cursor-pointer transition-colors" size={24} />
+                  <Facebook className="text-gray-400 hover:text-blue-700 cursor-pointer transition-colors" size={24} />
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-xl shadow-xl p-8">
+                {submitted ? (
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-4">✅</div>
+                    <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
+                    <p className="text-gray-600">We've received your message and will get back to you soon.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 transition-colors"
+                      />
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Your Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 transition-colors"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 transition-colors"
+                      />
+                      <input
+                        type="text"
+                        name="company"
+                        placeholder="Company Name"
+                        value={formData.company}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 transition-colors"
+                      />
+                    </div>
+                    <textarea
+                      name="message"
+                      placeholder="Your Message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={6}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 transition-colors resize-none"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                    >
+                      Send Message <Send size={18} />
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// FAQ PAGE
+const FAQPage = () => {
+  const [openFAQ, setOpenFAQ] = useState(0);
+
+  const faqs = [
+    {
+      q: 'What services does McTechy offer?',
+      a: 'McTechy offers comprehensive technology services including web development, mobile app development, cloud solutions, cybersecurity, data analytics, and AI/ML solutions.'
+    },
+    {
+      q: 'How long does a typical project take?',
+      a: 'Project timelines vary depending on scope and complexity. Simple projects may take 4-8 weeks, while larger enterprise solutions can take 3-6 months or longer.'
+    },
+    {
+      q: 'Do you offer support after project completion?',
+      a: 'Yes, we provide comprehensive post-launch support including maintenance, updates, and technical assistance to ensure your solution runs smoothly.'
+    },
+    {
+      q: 'What is your development process?',
+      a: 'We follow an agile development process that includes discovery, planning, development, testing, deployment, and ongoing support with regular client communication.'
+    },
+    {
+      q: 'Can you work with existing technology stacks?',
+      a: 'Absolutely! We have experience working with various technologies and can integrate with your existing systems and infrastructure.'
+    },
+    {
+      q: 'Do you sign NDAs?',
+      a: 'Yes, we regularly sign NDAs to protect our clients\' confidential information and intellectual property.'
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Frequently Asked Questions</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Find answers to common questions about McTechy and our services
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <button
+                  onClick={() => setOpenFAQ(openFAQ === idx ? -1 : idx)}
+                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                >
+                  <h3 className="text-lg font-semibold text-left">{faq.q}</h3>
+                  <ChevronDown
+                    size={24}
+                    className={`text-purple-600 transition-transform ${openFAQ === idx ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {openFAQ === idx && (
+                  <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                    <p className="text-gray-600">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// TESTIMONIALS PAGE
+const TestimonialsPage = () => {
+  const testimonials = [
+    {
+      name: 'Alex Johnson',
+      company: 'TechStart Inc',
+      role: 'CEO',
+      text: 'McTechy transformed our business with their innovative solutions. Highly professional and results-oriented.',
+      rating: 5,
+      avatar: '👨‍💼'
+    },
+    {
+      name: 'Maria Garcia',
+      company: 'Global Enterprises',
+      role: 'CTO',
+      text: 'Outstanding quality of work and excellent communication throughout the project. Would definitely work with them again.',
+      rating: 5,
+      avatar: '👩‍💼'
+    },
+    {
+      name: 'Robert Chen',
+      company: 'Innovation Labs',
+      role: 'Founder',
+      text: 'McTechy delivered beyond expectations. Their team is knowledgeable and dedicated to success.',
+      rating: 5,
+      avatar: '👨‍💼'
+    },
+    {
+      name: 'Emily Brown',
+      company: 'Digital Solutions Co',
+      role: 'Project Director',
+      text: 'Professional, reliable, and innovative. McTechy is the partner you want for your digital transformation.',
+      rating: 5,
+      avatar: '👩‍💼'
+    },
+  ];
+
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Client Testimonials</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            Hear what our satisfied clients have to say about working with McTechy
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-xl shadow-lg">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} size={20} className="fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-6 italic">"{testimonial.text}"</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-2xl">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <p className="font-bold">{testimonial.name}</p>
+                    <p className="text-sm text-gray-600">{testimonial.role} at {testimonial.company}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// PRIVACY PAGE
+const PrivacyPage = () => {
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Privacy Policy</h1>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-lg max-w-none space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-3">1. Information We Collect</h2>
+              <p className="text-gray-600">We collect information you provide directly to us, such as when you fill out a form, request services, or contact us. This may include name, email address, phone number, and company information.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">2. How We Use Your Information</h2>
+              <p className="text-gray-600">We use the information we collect to provide, maintain, and improve our services, respond to your inquiries, and send you marketing communications (with your consent).</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">3. Data Security</h2>
+              <p className="text-gray-600">We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">4. Cookies</h2>
+              <p className="text-gray-600">We use cookies and similar technologies to enhance your experience on our website, analyze usage patterns, and deliver personalized content.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">5. Third-Party Services</h2>
+              <p className="text-gray-600">We may use third-party service providers to assist us in operating our website and conducting our business. These providers are bound by confidentiality agreements.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">6. Your Rights</h2>
+              <p className="text-gray-600">You have the right to access, correct, or delete your personal information. To exercise these rights, please contact us at privacy@mctechy.com.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">7. Contact Us</h2>
+              <p className="text-gray-600">If you have questions about this Privacy Policy, please contact us at hello@mctechy.com.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// TERMS PAGE
+const TermsPage = () => {
+  return (
+    <div className="pt-20">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-5xl font-bold mb-6">Terms & Conditions</h1>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-lg max-w-none space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-3">1. Agreement to Terms</h2>
+              <p className="text-gray-600">By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">2. Use License</h2>
+              <p className="text-gray-600">Permission is granted to temporarily download one copy of the materials (information or software) on McTechy's website for personal, non-commercial transitory viewing only.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">3. Disclaimer</h2>
+              <p className="text-gray-600">The materials on McTechy's website are provided for informational purposes. McTechy makes no warranties, expressed or implied, and hereby disclaims and negates any other warranty.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">4. Limitations</h2>
+              <p className="text-gray-600">In no event shall McTechy or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">5. Accuracy of Materials</h2>
+              <p className="text-gray-600">The materials appearing on McTechy's website could include technical, typographical, or photographic errors. McTechy does not warrant that any of the materials on our website are accurate, complete, or current.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">6. Links</h2>
+              <p className="text-gray-600">McTechy has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by McTechy of the site.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">7. Modifications</h2>
+              <p className="text-gray-600">McTechy may revise these terms of service for our website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.</p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-3">8. Governing Law</h2>
+              <p className="text-gray-600">These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction] and you irrevocably submit to the exclusive jurisdiction of the courts located there.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// FOOTER COMPONENT
+const Footer = ({ setCurrentPage }) => {
+  return (
+    <footer className="bg-gray-900 text-white py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">M</span>
+              </div>
+              <span className="text-xl font-bold">McTechy</span>
+            </div>
+            <p className="text-gray-400">Transforming businesses through innovative technology solutions.</p>
+            <div className="flex gap-4 pt-2">
+              <Linkedin className="hover:text-purple-400 cursor-pointer transition-colors" size={20} />
+              <Twitter className="hover:text-purple-400 cursor-pointer transition-colors" size={20} />
+              <Facebook className="hover:text-purple-400 cursor-pointer transition-colors" size={20} />
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-bold mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400">
+                {['home', 'about', 'services', 'portfolio', 'team', 'blog'].map(link) => 
+              <li key={link}>
+                <button
+                  onClick={()> setCurrentPage(link)}
+                    className="hover:text-white transition-colors capitalize"
+                  >
+                    {link}
+                  </button>
+                </li>
+              )}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h4 className="font-bold mb-4">Services</h4>
+            <ul className="space-y-2 text-gray-400">
+              {['Web Development', 'Mobile Apps', 'Cloud Solutions', 'Cybersecurity', 'Data Analytics'].map((service) => (
+                <li key={service}>
+                  <button
+                    onClick={() => setCurrentPage('services')}
+                    className="hover:text-white transition-colors"
+                  >
+                    {service}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-bold mb-4">Legal</h4>
+            <ul className="space-y-2 text-gray-400">
+              {[
+                { name: 'Privacy Policy', page: 'privacy' },
+                { name: 'Terms & Conditions', page: 'terms' },
+                { name: 'FAQs', page: 'faq' },
+                { name: 'Contact', page: 'contact' },
+              ].map(link) => 
+                <li key={link.page}>
+                  <button
+                    onClick={() => setCurrentPage(link.page)}
+                    className="hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </button>
+                </li>
+            
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400">
+          <p>&copy; 2024 McTechy. All rights reserved.</p>
+          <p>Designed & Developed with ❤️ by McTechy</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default McTechyWebsite;
